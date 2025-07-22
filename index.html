@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Absensi SMK</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        background: #f4f6f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .container {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .form input {
+        padding: 10px;
+        margin: 10px 5px;
+        width: 45%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form button {
+        padding: 10px 20px;
+        margin: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .form button:hover {
+        background-color: #45a049;
+      }
+
+      .aksi button {
+        padding: 8px 15px;
+        margin: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .aksi button:hover {
+        background-color: #0056b3;
+      }
+
+      .daftar-siswa {
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .item-siswa {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      @media (max-width: 600px) {
+        .form input {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .form button {
+          width: 100%;
+        }
+
+        .aksi button {
+          width: 100%;
+          margin: 5px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Absensi Siswa SMK</h1>
+    <div class="container">
+      <div class="form">
+        <input type="text" id="nama" placeholder="Nama Siswa" />
+        <input type="number" id="nilai" placeholder="Nilai" />
+        <button onclick="tambahSiswa()">Tambah</button>
+      </div>
+      <div class="aksi">
+        <button onclick="tampilkanSiswa()">Tampilkan Semua</button>
+        <button onclick="cariSiswa()">Cari Siswa</button>
+        <button onclick="lihatEntries()">Lihat Entries</button>
+        <button onclick="lihatKeys()">Lihat Index</button>
+      </div>
+      <div id="output" class="daftar-siswa"></div>
+    </div>
+    <script>
+      const siswa = [
+        { nama: "Budi", nilai: 85 },
+        { nama: "Ani", nilai: 90 },
+        { nama: "Tono", nilai: 75 },
+      ];
+
+      let output = document.getElementById("output");
+
+      const tambahSiswa = () => {
+        let nama = document.getElementById("nama").value.trim();
+        let nilai = document.getElementById("nilai").value.trim();
+
+        if (nama === "" || nilai === "") {
+          alert("Nama dan nilai tidak boleh kosong!");
+          return;
+        }
+
+        siswa.push({
+          nama: nama,
+          nilai: parseInt(nilai), // ubah nilai jadi angka
+        });
+
+        // Kosongkan input setelah ditambahkan
+        document.getElementById("nama").value = "";
+        document.getElementById("nilai").value = "";
+
+        // Bisa langsung tampilkan ulang daftar siswa
+        tampilkanSiswa();
+      };
+
+      const tampilkanSiswa = () => {
+        console.log("tampilkanSiswa");
+        const tampilanSiswa = siswa.map((item, index) => {
+          return `<div class="item-siswa">${index + 1}. ${item.nama} - Nilai: ${
+            item.nilai
+          }</div>`;
+        });
+        output.innerHTML = tampilanSiswa.join("");
+      };
+
+      const cariSiswa = () => {
+        console.log("cariSiswa");
+        const inputNama = document.getElementById("nama").value.trim();
+
+        const mencariSiswa = siswa.find((item) => {
+          return item.nama.toLowerCase() === inputNama.toLowerCase();
+        });
+
+        if (mencariSiswa) {
+          output.innerHTML = `<div>${mencariSiswa.nama} - Nilai: ${mencariSiswa.nilai}</div>`;
+        } else {
+          output.innerHTML = `<div>Siswa tidak ditemukan.</div>`;
+        }
+      };
+
+      const lihatEntries = () => {
+        console.log("lihatEntries");
+
+        const tampilan = [];
+        for (const [index, item] of siswa.entries()) {
+          tampilan.push(
+            `<div>${index + 1}. ${item.nama} - Nilai: ${item.nilai}</div>`
+          );
+        }
+        output.innerHTML = tampilan.join("");
+      };
+
+      const lihatKeys = () => {
+        console.log("lihatKeys");
+        const display = [];
+        for (const index of siswa.keys()) {
+          const item = siswa[index];
+          display.push(
+            `<div>${index + 1}. ${item.nama} - Nilai: ${item.nilai}</div>`
+          );
+        }
+        output.innerHTML = display.join("");
+      };
+    </script>
+  </body>
+</html>
